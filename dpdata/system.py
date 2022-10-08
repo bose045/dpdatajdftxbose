@@ -188,6 +188,7 @@ class System (MSONable) :
         fmt : str
             Format of the file, supported formats are
                 - ``auto``: infered from `file_name`'s extension
+                - ``jdftx/jdftxout``: JDFTx output
                 - ``lammps/lmp``: Lammps data
                 - ``lammps/dump``: Lammps dump
                 - ``deepmd/raw``: deepmd-kit raw
