@@ -42,6 +42,7 @@ setuptools.setup(
               'dpdata/rdkit',
               'dpdata/plugins',
               'dpdata/pymatgen',
+              'dpdata/jdftx'
     ],
     package_data={'dpdata':['*.json']},
     classifiers=[
