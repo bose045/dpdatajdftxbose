@@ -8,7 +8,7 @@ import gzip
 def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, type_idx_zero = True):
     #Units:
     eV = 1./27.2114  # divide by eV to go from jdftx H to eV
-    Angstrom = 1/0.5291772
+    Angstrom = 1/0.5291772 # divide by Ang to go from jdftx bohr to ang
     
     fp = open(fname)
 
@@ -102,7 +102,7 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
             energy = PE_tot
             # accumulate items after each step
             all_coords.append(atpos)
-            all_cells.append(R)
+            all_cells.append(R.T)  # need to transpose jdftx convention to map to outcar style
             all_energies.append(energy)
             all_forces.append(forces)
 
