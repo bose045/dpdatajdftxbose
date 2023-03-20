@@ -36,7 +36,7 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
         if line.startswith('EextIonic'):
             tokens = line.split()
             PE_Applied = float(tokens[2])/eV
-            # print(PE_Applied)
+            
         if line.find('total atoms') > 0:
             atTotalNumb = int(line.split()[4])  # total atoms
             #initialize size for forces since this doesn't work too well now with the hooks given before the two
@@ -49,6 +49,7 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
             iStep = int(tokens[2])
             stepActive = (iStep % nEvery == 0)
             PE_tot = float(tokens[4])/eV
+            
 
         #Lattice vectors:
         if latvecActive and iLine<refLine+3:
@@ -115,14 +116,21 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
             # when done
             if iRow+1==atTotalNumb:
                 forcesActive = False
+                # for testing
+                # print(extForces[0])
+                # print(forces[0])
+                                
                 # subtract out external forces from this step
                 forces = forces - extForces
+                
                 if coordsType == "Cartesian":
                     forces *= 1./(eV/Angstrom)
                 else:
                     forces = np.dot(forces, np.linalg.inv(R)/eV) #convert to Cartesian (eV/Angstrom)
 
-        if stepActive and line.startswith('# Forces in '):
+        # if stepActive and line.startswith('# Forces in '):
+        # need to read this in even if step not active for external force
+        if line.startswith('# Forces in '):
             forcesActive = True
             refLine = iLine+1
             coordsType = line.split()[3]
@@ -145,6 +153,8 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
 
             #Removed applied potential from forces and energy
             if appliedPotential:
+                # print('total | applied')
+                # print(PE_tot*eV, PE_Applied*eV)
                 energy = PE_tot - PE_Applied
             else:
             # if True:
@@ -155,6 +165,7 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
             all_energies.append(energy)
             all_forces.append(forces)
             # len(all_forces)
+            if iStep==3: break  # for testing
     fp.close()
 
     unique_atom_names = np.unique(atom_names)
