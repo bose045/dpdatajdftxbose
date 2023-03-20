@@ -165,7 +165,7 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
             all_energies.append(energy)
             all_forces.append(forces)
             # len(all_forces)
-            if iStep==3: break  # for testing
+            # if iStep==3: break  # for testing
     fp.close()
 
     unique_atom_names = np.unique(atom_names)
