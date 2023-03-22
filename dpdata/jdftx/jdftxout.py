@@ -160,12 +160,12 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
             # if True:
                 energy = PE_tot
             # accumulate items after each step
-            all_coords.append(atpos)
-            all_cells.append(R.T)  # need to transpose jdftx convention to map to outcar style
-            all_energies.append(energy)
-            all_forces.append(forces)
+            all_coords.append(np.copy(atpos))
+            all_cells.append(np.copy(R.T))  # need to transpose jdftx convention to map to outcar style
+            all_energies.append(np.copy(energy))
+            all_forces.append(np.copy(forces))
             # len(all_forces)
-            # if iStep==3: break  # for testing
+            # if iStep==3: break  # HACK for testing
     fp.close()
 
     unique_atom_names = np.unique(atom_names)
