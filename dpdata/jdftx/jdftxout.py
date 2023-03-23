@@ -164,7 +164,7 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
             all_cells.append(np.copy(R.T))  # need to transpose jdftx convention to map to outcar style
             all_energies.append(np.copy(energy))
             all_forces.append(np.copy(forces))
-            # len(all_forces)
+            # len(all_forces) 
             # if iStep==3: break  # HACK for testing
     fp.close()
 
