@@ -7,6 +7,11 @@ import gzip
 
 def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, type_idx_zero = True):
         #Units:
+    #create file with last major update noted
+    with open('VersionLatestFix',"w") as f:
+        print(f'updated version with fix to append to list now using np.copy!',file=f)
+    
+    
     eV = 1./27.2114  # divide by eV to go from jdftx H to eV
     Angstrom = 1/0.5291772 # divide by Ang to go from jdftx bohr to ang
     
@@ -181,7 +186,7 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
                 atom_types.append(idx)
             else :
                 atom_types.append(idx+1)
-
+    print('np.copy fixed version')
     return unique_atom_names, ions_per_type, atom_types, np.array(all_cells), np.array(all_coords), np.array(all_energies), np.array(all_forces)
 
 # fname = './KFtesting/CCPBED3md0112978.jdftxout'
