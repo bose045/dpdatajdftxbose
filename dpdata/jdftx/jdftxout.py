@@ -6,12 +6,12 @@ import gzip
 
 
 def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, type_idx_zero = True):
-        #Units:
+
     #create file with last major update noted
     with open('VersionLatestFix',"w") as f:
         print(f'updated version with fix to append to list now using np.copy!',file=f)
     
-    
+        #Units:    
     eV = 1./27.2114  # divide by eV to go from jdftx H to eV
     Angstrom = 1/0.5291772 # divide by Ang to go from jdftx bohr to ang
     
