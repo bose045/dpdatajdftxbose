@@ -134,7 +134,7 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
                     forces = np.dot(forces, np.linalg.inv(R)/eV) #convert to Cartesian (eV/Angstrom)
 
         # if stepActive and line.startswith('# Forces in '):
-        # need to read this in even if step not active for external force
+        # need to read this in even if step not active to gather external force even before step is decided or not
         if line.startswith('# Forces in '):
             forcesActive = True
             refLine = iLine+1
@@ -173,19 +173,30 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
             # if iStep==3: break  # HACK for testing
     fp.close()
 
-    unique_atom_names = np.unique(atom_names)
+    unique_atom_names = np.unique(atom_names) # storted!! H O 
+    atom_dict = dict(zip(list(unique_atom_names),np.arange(0,len(unique_atom_names))))
+
+    # print(np.arange(0,len(unique_atom_names)))
+    # atom_dict = dict([list(unique_atom_names), np.arange(0,len(unique_atom_names))])
+    print(f'{atom_dict=}')
+    
+    # unique_atom_names_sort = np.unique(atom_names) # sorted but we want this to appear as they do in output
+    # uniqueIndexes = np.unique(atom_names, return_index=True)[1]
+    # unique_atom_names = [atom_names[index] for index in sorted(uniqueIndexes)]
 
     ions_per_type = []
     for atom_name in unique_atom_names:
-        ions_per_type.append(len(np.where(atom_names == atom_name)[0]))
+        ions_per_type.append(len(np.where(atom_names == atom_name)[0]))  # H O
 
     atom_types = []
-    for idx,ii in enumerate(ions_per_type) :
-        for jj in range(ii) :
-            if type_idx_zero :
-                atom_types.append(idx)
-            else :
-                atom_types.append(idx+1)
+    # print(atom_dict[atom_names[0]])
+    for idx in range(len(atom_names)) :
+        if type_idx_zero :
+            atom_types.append(atom_dict[atom_names[idx]])
+        else :
+            atom_types.append(atom_dict[atom_names[idx+1]])
+    print(f'{unique_atom_names=}  {ions_per_type=} {atom_types=}')
+    print('atom map fixed')
     print('np.copy fixed version')
     return unique_atom_names, ions_per_type, atom_types, np.array(all_cells), np.array(all_coords), np.array(all_energies), np.array(all_forces)
 
