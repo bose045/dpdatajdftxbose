@@ -9,6 +9,7 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
 
     #create file with last major update noted
     with open('VersionLatestFix',"w") as f:
+        print(f'alphabetized elements to ensure order',file=f)
         print(f'updated version with fix to append to list now using np.copy!',file=f)
     
         #Units:    
