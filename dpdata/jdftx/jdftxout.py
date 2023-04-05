@@ -196,7 +196,7 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
             atom_types.append(atom_dict[atom_names[idx]])
         else :
             atom_types.append(atom_dict[atom_names[idx+1]])
-    print(f'{unique_atom_names=}  {ions_per_type=} {atom_types=}')
+    # print(f'{unique_atom_names=}  {ions_per_type=} {atom_types=}')
     print('atom map fixed')
     print('np.copy fixed version')
     return unique_atom_names, ions_per_type, atom_types, np.array(all_cells), np.array(all_coords), np.array(all_energies), np.array(all_forces)
