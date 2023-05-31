@@ -34,6 +34,7 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
     appliedPotential = False #Whether applied potential is used
 
     for iLine,line in enumerate(fp):
+        # print(line)
         # Check for applied potential
         if line.startswith('ionic-gaussian-potential'):
             appliedPotential = True

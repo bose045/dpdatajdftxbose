@@ -19,7 +19,7 @@ process multi systems
 
 
 if len(sys.argv) < 2:
-    print("Usage: python VariableParseAIMDtoDPMD.py <int for step stride to take> | conversionInfo")
+    print("Usage: python VariableParseAIMDtoDPMD.py <int for step stride to take> > conversionInfo")
     exit(1)
     
 # add rejection of initial data
