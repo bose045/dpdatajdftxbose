@@ -3,6 +3,7 @@ import re
 import warnings
 import sys
 import gzip
+import glob
 
 
 def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, type_idx_zero = True):
