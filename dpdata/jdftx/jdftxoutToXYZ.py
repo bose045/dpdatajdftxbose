@@ -19,10 +19,10 @@ def main(xyzOut):
             # print('Update: working on step ')
             # BUILD xyz output
             AtNumTotal = np.sum(ions_per_type)
-            f.write(f'{AtNumTotal} \n')
+            
             # loop over each frame
             for frameNum in range(len(all_energies)):
- 
+                f.write(f'{AtNumTotal} \n')
                 lattice = ' '.join(['{:.3f}'.format(x) for x in all_cells[frameNum].flatten()])
 
                 # print(lattice)
