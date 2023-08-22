@@ -9,6 +9,7 @@ import os
 
 # python /home/kamron/dpdatajdftx/dpdata/jdftx/jdftxoutToXYZ.py test.xyz
 
+
 def main(xyzOut):
     pattern = r'*jdftxout'
     with open(xyzOut, 'w') as f:
@@ -19,10 +20,10 @@ def main(xyzOut):
             # print('Update: working on step ')
             # BUILD xyz output
             AtNumTotal = np.sum(ions_per_type)
-            f.write(f'{AtNumTotal} \n')
+            
             # loop over each frame
             for frameNum in range(len(all_energies)):
- 
+                f.write(f'{AtNumTotal} \n')
                 lattice = ' '.join(['{:.3f}'.format(x) for x in all_cells[frameNum].flatten()])
 
                 # print(lattice)
