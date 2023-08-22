@@ -30,7 +30,7 @@ def main(xyzOut):
                 # print(all_cells[frameNum])
                 # sys.exit(1)
                 f.write(f'Lattice="{lattice}" ')
-                f.write(f'Properties=species:S:1:pos:R:3:forces:R:3 \n')
+                f.write(f'Properties=species:S:1:pos:R:3:forces:R:3 energy={all_energies[frameNum]} \n')  # add energy!!
 
                 for atIdx in range(AtNumTotal):
                     forces = ' '.join(['{:10.6f}'.format(x) for x in all_forces[frameNum][atIdx].flatten()])
