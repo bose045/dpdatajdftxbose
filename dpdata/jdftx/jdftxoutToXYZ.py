@@ -9,6 +9,7 @@ import os
 
 # python /home/kamron/dpdatajdftx/dpdata/jdftx/jdftxoutToXYZ.py test.xyz
 
+
 def main(xyzOut):
     pattern = r'*jdftxout'
     with open(xyzOut, 'w') as f:
