@@ -33,6 +33,7 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
     atposActive = False #Whether reading atomic positions
     forcesActive = False #Whether reading forces
     appliedPotential = False #Whether applied potential is used
+    converged = False  # check for convergence before allowing data taken
 
     for iLine,line in enumerate(fp):
         # print(line)
@@ -50,12 +51,20 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
             #initialize size for forces since this doesn't work too well now with the hooks given before the two
             forces = np.zeros((atTotalNumb,3))
             extForces = np.zeros((atTotalNumb,3))
+        
+        # ElecMinimize: None of the convergence criteria satisfied after 30 iterations.
+        # or ElecMinimize: Converged (but not with SCF!)
+        if line.startswith('ElecMinimize: Converged'):
+            converged = True
 
         if line.startswith('IonicDynamics: Step:'):
         # if line.startswith('IonicMinimize: Iter:'):
             tokens = line.split()
             iStep = int(tokens[2])
-            stepActive = (iStep % nEvery == 0)
+            if converged:
+                stepActive = (iStep % nEvery == 0)
+                converged = False
+            
             PE_tot = float(tokens[4])/eV
             
 

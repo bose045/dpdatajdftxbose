@@ -8,6 +8,7 @@ from jdftxout import get_frames
 import os
 
 # python /home/kamron/dpdatajdftx/dpdata/jdftx/jdftxoutToXYZ.py test.xyz
+# python ~/dpdatajdftx/dpdata/jdftx/jdftxoutToXYZ.py 500deg300rot.xyz > conversionInfo
 
 
 def main(xyzOut):
@@ -15,7 +16,8 @@ def main(xyzOut):
     with open(xyzOut, 'w') as f:
         for pathAndFilename in sorted(glob.iglob(os.path.join(os.getcwd(), pattern))):
             fname = os.path.basename(pathAndFilename)
-            unique_atom_names, ions_per_type, atom_types, all_cells, all_coords, all_energies, all_forces = get_frames(fname)
+            print('working on: ', fname)
+            unique_atom_names, ions_per_type, atom_types, all_cells, all_coords, all_energies, all_forces = get_frames(fname, step = 10)
             
             # print('Update: working on step ')
             # BUILD xyz output

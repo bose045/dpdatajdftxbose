@@ -35,7 +35,7 @@ for curDir in dirs:
 
     os.chdir(curDir)
     # convFp = open('conversionInfo',"w")
-    fs=glob('./*.jdftxout')  # remember to change here !!!
+    fs=sorted(glob('./*.jdftxout'))  # remember to change here !!!
     ms=MultiSystems()
     ls=[]
     for f in fs:
@@ -75,7 +75,7 @@ for curDir in dirs:
     # print(f'shape of forces - frams,atoms,forces', file=convFp)
     # print(np.shape(np.stack(ls['forces'])), file=convFp)  # (201, 54, 3)
     
-f.close()
+# f.close()
     
 # %%
 '''
