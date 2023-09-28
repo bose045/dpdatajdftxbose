@@ -12,6 +12,7 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
     with open('VersionLatestFix',"w") as f:
         print(f'alphabetized elements to ensure order',file=f)
         print(f'updated version with fix to append to list now using np.copy!',file=f)
+        print(f'added convergence check',file=f)
     
         #Units:    
     eV = 1./27.2114  # divide by eV to go from jdftx H to eV
