@@ -56,7 +56,7 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
         
         # ElecMinimize: None of the convergence criteria satisfied after 30 iterations.
         # or ElecMinimize: Converged (but not with SCF!)
-        if line.startswith('ElecMinimize: Converged'):
+        if line.startswith('ElecMinimize: Converged') or line.startswith('SCF: Converged'):
             converged = True
 
         if line.startswith('IonicDynamics: Step:'):
