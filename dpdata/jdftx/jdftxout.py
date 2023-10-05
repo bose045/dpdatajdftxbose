@@ -35,6 +35,7 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
     forcesActive = False #Whether reading forces
     appliedPotential = False #Whether applied potential is used
     converged = False  # check for convergence before allowing data taken
+    # set convergence_check to False to ignore convergence check
 
     for iLine,line in enumerate(fp):
         # print(line)
@@ -62,7 +63,7 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
         # if line.startswith('IonicMinimize: Iter:'):
             tokens = line.split()
             iStep = int(tokens[2])
-            if converged:
+            if converged or not convergence_check:
                 stepActive = (iStep % nEvery == 0)
                 converged = False
             

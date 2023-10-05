@@ -19,13 +19,15 @@ process multi systems
 
 
 if len(sys.argv) < 2:
-    print("Usage: python VariableParseAIMDtoDPMD.py <int for step stride to take> > conversionInfo")
+    print("Usage: python VariableParseAIMDtoDPMD.py <int for step stride to take> <checkConvergence optional> conversionInfo")
     exit(1)
     
 # add rejection of initial data
 
 step = int(sys.argv[1])
-# n_bulk = float(sys.argv[2]) if (len(sys.argv) > 2) else None
+convergence_check = sys.argv[2] if (len(sys.argv) > 2) else True  # default to True
+if convergence_check == 'False':
+    convergence_check = False
 
 print(f' {step=}')
 
@@ -43,7 +45,7 @@ for curDir in dirs:
         print(f)
         try:
             # ls=LabeledSystem(f, format='jdftxout',step=1)
-            ls=LabeledSystem(f, format='jdftxout',step=step)
+            ls=LabeledSystem(f, format='jdftxout',step=step, convergence_check=convergence_check)
             #ls=LabeledSystem(f)
             print(ls)
         except:
