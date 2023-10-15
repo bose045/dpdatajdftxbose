@@ -8,7 +8,7 @@ from dpdata.utils import sort_atom_names, uniq_atom_names
 @Format.register("jdftx/jdftxout")
 class JDFTXOutFormat(Format):
     @Format.post("rot_lower_triangular")
-    def from_labeled_system(self, file_name, begin=0, step=1, convergence_check=True, **kwargs):
+    def from_labeled_system(self, file_name, begin=0, step=1, convergence_check=True,Ktot=1, K=1, **kwargs):
         data = {}
         ml = kwargs.get("ml", False)  #XX
         data['atom_names'], \
@@ -18,7 +18,7 @@ class JDFTXOutFormat(Format):
             data['coords'], \
             data['energies'], \
             data['forces'], \
-            = dpdata.jdftx.jdftxout.get_frames(file_name, begin=begin, step=step, ml=ml, convergence_check=convergence_check)
+            = dpdata.jdftx.jdftxout.get_frames(file_name, begin=begin, step=step, ml=ml, convergence_check=convergence_check, Ktot=Ktot, K=K)
         # if tmp_virial is not None:
         #     data['virials'] = tmp_virial
         # scale virial to the unit of eV

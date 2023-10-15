@@ -6,7 +6,7 @@ import gzip
 import glob
 
 
-def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, type_idx_zero = True,Ktot = 1,K=1):
+def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, type_idx_zero = True):
 
     #create file with last major update noted
     with open('VersionLatestFix',"w") as f:
@@ -37,18 +37,6 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
     converged = False  # check for convergence before allowing data taken
     # set convergence_check to False to ignore convergence check
 
-    def get_last_step_number(fname):
-        with open(fname, 'r') as fp:
-            last_step = None
-            for line in fp:
-                if line.startswith('IonicDynamics: Step:'):
-                    tokens = line.split()
-                    last_step = int(tokens[2])
-        return last_step
-    kth = np.floor(get_last_step_number(fname)/Ktot)
-    kbound_lo = kth*(K-1)
-    kbound_hi = kth*K
-
     for iLine,line in enumerate(fp):
         # print(line)
         # Check for applied potential
@@ -76,7 +64,7 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
             tokens = line.split()
             iStep = int(tokens[2])
             if converged or not convergence_check:
-                stepActive = (iStep % nEvery == 0) and not((iStep>=kbound_lo) & (iStep<kbound_hi))
+                stepActive = (iStep % nEvery == 0)
                 converged = False
             
             PE_tot = float(tokens[4])/eV
