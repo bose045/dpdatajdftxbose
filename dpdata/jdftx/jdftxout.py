@@ -6,7 +6,7 @@ import gzip
 import glob
 
 
-def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, type_idx_zero = True,Ktot = 1,K=1, shortrun=True):
+def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, type_idx_zero = True,Ktot = 1,K=1, shortrun=False):
 
     #create file with last major update noted
     with open('VersionLatestFix',"w") as f:

@@ -8,7 +8,7 @@ from dpdata.utils import sort_atom_names, uniq_atom_names
 @Format.register("jdftx/jdftxout")
 class JDFTXOutFormat(Format):
     @Format.post("rot_lower_triangular")
-    def from_labeled_system(self, file_name, begin=0, step=1, convergence_check=True,Ktot=1, K=1, shortrun=True, **kwargs):
+    def from_labeled_system(self, file_name, begin=0, step=1, convergence_check=True,Ktot=1, K=1, shortrun=False, **kwargs):
         data = {}
         ml = kwargs.get("ml", False)  #XX
         # if shortrun:
