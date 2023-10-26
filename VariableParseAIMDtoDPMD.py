@@ -12,56 +12,93 @@ from glob import glob
 import numpy as np
 import os
 import sys
-
+import re
+from collections import defaultdict
 """
 process multi systems
 """
 
+def extract_params_from_filename(filename):
+    # Extract values using regex based on the file naming pattern
+    match = re.search(r'sys(\d+)_run(\d+)_(\d+)_(\d+).jdftxout', filename)
+    if match:
+        return tuple(map(int, match.groups()))
+    raise ValueError(f"Invalid filename format: {filename}")
+
+def k_fold_sampling(files, k):
+    # Initialize folds
+    folds = [[] for _ in range(k)]
+    
+    for file in files:
+        w, x, y, z = extract_params_from_filename(file)  # A function to extract parameters from each individual file
+        print(f'w,x,y,z = {w,x,y,z}')
+        print('ktot = ',k)
+        rem = (z+k) % k
+        #print('rem',rem)
+        for kk in range (k):
+            if rem != kk:
+                folds[kk].append(file)
+                print('goes to kth fold = ',kk)
+    # Print the number of files in each fold
+    for idx, fold in enumerate(folds):
+        print(f"Number of files in fold {idx}: {len(fold)}")
+    return folds
 
 if len(sys.argv) < 2:
-    print("Usage: python VariableParseAIMDtoDPMD.py <int for step stride to take> <K = Rejct Kth fold (within 1 to Ktot) optional> <current K> <checkConvergence optional> conversionInfo")
-    #eg: python /home/pmech/git_repos/dpdatajdftxbose/VariableParseAIMDtoDPMD.py 10 3 1 False> log
+    print("Usage: python VariableParseAIMDtoDPMD.py <int for step stride to take> <K = Rejct Kth fold (within 1 to Ktot) optional> <Shortrun True/False optional> <checkConvergence optional> conversionInfo")
+    #eg: python /home/pmech/git_repos/dpdatajdftxbose/VariableParseAIMDtoDPMD.py 10 3 True False > log
     exit(1)
     
 # add rejection of initial data
 
 step = int(sys.argv[1])
 Ktot = int(sys.argv[2]) if (len(sys.argv) > 2) else 1  # default to 1
-convergence_check = sys.argv[3] if (len(sys.argv) > 3) else True  # default to True
+shortrun = sys.argv[3] if (len(sys.argv) > 3) else False  # default to 1
+print('shortrun',shortrun)
+convergence_check = sys.argv[4] if (len(sys.argv) > 4) else True  # default to True
+
 if convergence_check == 'False':
     convergence_check = False
+
+# convFp = open('conversionInfo',"w")
+# all_files = glob('./*.jdftxout')  # remember to change here !!!   
+all_files = [os.path.abspath(file) for file in glob('./*.jdftxout')]
+folds = k_fold_sampling(all_files, Ktot)
+
 for K in range(1,Ktot+1):
     print(f' {step=}')
     print(f' {Ktot=}')
-    print(f' {K=}')
+    print(f' {K=}') 
     #dirs = ['train','val']
     dirs = ['train']
     for curDir in dirs:
-
         os.chdir(curDir)
-        # convFp = open('conversionInfo',"w")
-        fs=sorted(glob('./*.jdftxout'))  # remember to change here !!!
+        if shortrun:
+            fs =folds[K-1]
+        else:
+            fs = all_files
+            
+        #fs=sorted(glob('./*.jdftxout'))  # remember to change here !!!
+        print(fs)
         ms=MultiSystems()
         ls=[]
         for f in fs:
             # break
-            print(f)
+            #print(f)
             try:
                 # ls=LabeledSystem(f, format='jdftxout',step=1)
                 # ls=LabeledSystem(f, format='jdftxout',step=step, convergence_check=convergence_check)
 
-                ls=LabeledSystem(f, format='jdftxout',step=step, convergence_check=convergence_check, Ktot=Ktot, K=K)
+                ls=LabeledSystem(f, format='jdftxout',step=step, convergence_check=convergence_check, Ktot=Ktot, K=K, shortrun=shortrun)
                 #ls=LabeledSystem(f)
                 print(ls)
             except:
                 
-                print("Fail to read^")
+                print("File",f,"failed to read")
                 
             if len(ls)>0:
                 ms.append(ls)
-        ls.to('vasp/poscar', 'POSCAR', frame_idx=0)
-        
-        
+        #ls.to('vasp/poscar', 'POSCAR', frame_idx=0)
         ms.to_deepmd_raw('K_'+str(K))
         ms.to_deepmd_npy('K_'+str(K))
         

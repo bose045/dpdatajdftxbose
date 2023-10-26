@@ -6,7 +6,7 @@ import gzip
 import glob
 
 
-def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, type_idx_zero = True,Ktot = 1,K=1):
+def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, type_idx_zero = True,Ktot = 1,K=1, shortrun=True):
 
     #create file with last major update noted
     with open('VersionLatestFix',"w") as f:
@@ -19,6 +19,10 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
     Angstrom = 1/0.5291772 # divide by Ang to go from jdftx bohr to ang
     
     fp = open(fname)
+    
+    # if shortrun:
+    #     Ktot = 1
+    #     K = 1
 
     all_coords = []
     all_cells = []
@@ -76,8 +80,12 @@ def get_frames(fname, begin = 0, step = 10, ml = False, convergence_check=True, 
             tokens = line.split()
             iStep = int(tokens[2])
             if converged or not convergence_check:
-                stepActive = (iStep % nEvery == 0) and not((iStep>=kbound_lo) & (iStep<kbound_hi))
-                converged = False
+                if shortrun:
+                    stepActive = (iStep % nEvery == 0)
+                    converged = False
+                else:
+                    stepActive = (iStep % nEvery == 0) and not((iStep>=kbound_lo) & (iStep<kbound_hi))
+                    converged = False
             
             PE_tot = float(tokens[4])/eV
             
